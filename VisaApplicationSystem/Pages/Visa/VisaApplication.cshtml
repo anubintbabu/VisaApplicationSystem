@@ -1,0 +1,649 @@
+﻿@page "/visaapplication"
+@model VisaApplicationSystem.Pages.Visa.VisaApplicationModel
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "visaapplication";
+      System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+      ViewData["Id"] = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "UserID").Value);
+}
+<div class="container mt-8" style="margin-top:50px">
+    <form method="post" id="formdata">
+    <h2 class="text-center mb-3" style="color:#30A9E1">VISA APPLICATION FORM</h2>
+    <div class="row mb-3">
+        <div class="col-4">
+              <input type="hidden" id="hdnId" value="@ViewData["Id"]" />
+             <input type="hidden" id="hdnApplicationId" value="0" />
+            <label for="cmbVisaType" class="form-label col-form-label-sm">Visa Type<span style="color:red">*</span></label>
+            <input type="hidden" id="hdnVisaTypeId" value="0" />
+            <select class="form-control" id="cmbVisaType">
+                <option selected value="0">Select Visa Type</option>
+            </select>
+              <span class="field-valid" id="hdnVisaTypeIdErr">Please select Visa Type</span>
+        </div>
+    </div>
+    <h5 class="mb-3" style="color:#30A9E1">Personal Details</h5>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label for="txtFullName" class="form-label col-form-label-sm">Full Name(As per Passport)<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtFullName">
+            <span class="field-valid" id="txtFullNameErr">Please Enter Full Name</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="txtFatherName" class="form-label col-form-label-sm">Father's Name<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtFatherName">
+            <span class="field-valid" id="txtFatherNameErr">Please Enter Father Name</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtMotherName" class="form-label col-form-label-sm">Mother's Name<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtMotherName">
+            <span class="field-valid" id="txtMotherNameErr">Please Enter Mother Name</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtSpouseName" class="form-label col-form-label-sm">Spouse's Name</label>
+            <input type="text" class="form-control" id="txtSpouseName">
+            <span class="field-valid" id="txtSpouseNameErr">Please Enter Spouse's Name</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4"> 
+            <label for="txtBirthDate" class="form-label col-form-label-sm">Birth Date<span style="color:red">*</span></label>
+            <input type="text" class="form-control date" id="txtBirthDate">
+             <input type="text" class="form-control datetoday" id="txtCurrentDate" hidden>
+             <span class="field-valid" id="txtBirthDateErr">Please Enter Birth Date</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtBirthCity" class="form-label col-form-label-sm">Birth City<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtBirthCity">
+            <span class="field-valid" id="txtBirthCityErr">Please Enter Birth City</span>
+        </div>
+        <div class="col-md-4">
+            <label for="cmbBirthCountry" class="form-label col-form-label-sm">Birth Country<span style="color:red">*</span></label>
+            <input type="hidden" id="hdnBirthCountry" value="0" />
+            <select class="form-control" id="cmbBirthCountry">
+                <option selected>Select Birth Country</option>               
+            </select>
+            <span class="field-valid" id="hdnBirthCountryErr">Please Enter Birth Country</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="cmbNationality" class="form-label col-form-label-sm">Nationality<span style="color:red">*</span></label>
+            <input type="hidden" id="hdnNationality" value="0"/>
+            <select class="form-control" id="cmbNationality">
+                <option selected>Select Nationality</option>               
+            </select>
+            <span class="field-valid" id="hdnNationalityErr">Please Enter Nationality</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtProfession" class="form-label col-form-label-sm">Profession</label>
+            <input type="text" class="form-control" id="txtProfession">
+            <span class="field-valid" id="txtProfessionErr">Please Enter Profession</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtReligion" class="form-label col-form-label-sm">Religion<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtReligion">
+            <span class="field-valid" id="txtReligionErr">Please Enter Religion</span>
+        </div>
+    </div>
+    <h5 class="mb-3" style="color:#30A9E1">Passport Details</h5>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="txtPassportNo" class="form-label col-form-label-sm">Passport No<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtPassportNo">
+            <span class="field-valid" id="txtPassportNoErr">Please Enter Passport No</span>
+        </div>
+        <div class="col-md-3">
+            <label for="txtDateofIssue" class="form-label col-form-label-sm">Issue Date <span style="color:red">*</span></label>
+            <input type="text" class="form-control date" id="txtDateofIssue">
+            <span class="field-valid" id="txtDateofIssueErr">Please Enter Issue Date</span>
+        </div>
+        <div class="col-md-3">
+            <label for="txtDateofExpiry" class="form-label col-form-label-sm">Expiry Date<span style="color:red">*</span></label>
+            <input type="text" class="form-control date" id="txtDateofExpiry">
+            <span class="field-valid" id="txtDateofExpiryErr">Please Enter Expiry Date</span>
+        </div>
+        <div class="col-md-3">
+            
+          <label for="cmbIssueCountry" class="form-label col-form-label-sm">Issuing Country<span style="color:red">*</span></label>
+            <input type="hidden" id="hdnIssueCountry" value="0"/>
+            <select class="form-control" id="cmbIssueCountry">
+                <option selected>Select Issue Country</option>               
+            </select>
+              <span class="field-valid" id="hdnIssueCountryErr">Please select issuing country</span>
+        </div>
+    </div>
+    <h5 class="mb-3" style="color:#30A9E1">Sponsor Details</h5>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="txtSponsorName" class="form-label col-form-label-sm">Sponsor Name<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtSponsorName">
+            <span class="field-valid" id="txtSponsorNameErr">Please Enter Name</span>
+        </div>
+        <div class="col-md-4">
+            <label for="cmbSponsorNationality" class="form-label col-form-label-sm">Nationality<span style="color:red">*</span></label>
+            <input type="hidden" id="hdnSponsorNationality" value="0"/>
+            <select class="form-control" id="cmbSponsorNationality">
+                <option selected>Select Nationality</option>               
+            </select>
+            <span class="field-valid" id="hdnSponsorNationalityErr">Please Enter Nationality</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtRelationship" class="form-label col-form-label-sm">Relationship(to sponsor)<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtRelationship">
+            <span class="field-valid" id="txtRelationshipErr">Please Enter Relationship</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="txtSponsorAddress" class="form-label col-form-label-sm">Business Address<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtSponsorAddress">
+            <span class="field-valid" id="txtSponsorAddressErr">Please Enter Address</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtSponsorTelNo" class="form-label col-form-label-sm">Tel No<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtSponsorTelNo">
+           <span class="field-valid" id="txtSponsorTelNoErr">Please Enter Telephone Number</span>
+        </div>
+        <div class="col-md-4">
+            <label for="txtSponsorMobileNo" class="form-label col-form-label-sm">Mobile<span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="txtSponsorMobileNo">
+            <span class="field-valid" id="txtSponsorMobileNoErr">Please Enter Mobile Number</span>
+        </div>
+    </div>
+     <h5 class="mb-3" style="color:#30A9E1">Upload Files</h5>
+
+      <div class="row" style="height:200px;">
+       <div class="col">
+       <div class="input-group-prepend">
+       <span class="input-group-text" id="inputGroupFileAddon01">Upload Passport</span>
+       </div>
+       <div class="custom-file">
+       <input type="hidden" id="userPassport">
+       <input type="file" class="custom-file-input" id="inputGroupFile01"
+        aria-describedby="inputGroupFileAddon01" onchange="readURL(this);">
+       <label class="custom-file-label" for="inputGroupFile01" id="filenamepassport"></label>
+        <span class="field-valid" id="userPassportErr">Please upload Passport</span>
+       </div>
+       </div>
+                                 @*    <input type="hidden" id="userPassport">
+                                    <input type='file' onchange="readURL(this);" />
+                                   
+                                    <div class="row">  <span class="field-valid" id="photoerror">Please upload photo</span></div>
+                                </div> *@
+                                <div class="col">
+                                  <embed id="pdf" width="200px" height="200px" />@*   <img id="photo" src="http://placehold.it/180" alt="user image" asp-for="UserImage" /> *@
+                                </div>
+                               @*  <span class="field-valid" id="userPassportErr">Please upload Passport</span> *@
+      </div>
+      
+      <div class="row" style="height:200px;">
+      <div class="col">
+
+       <div class="input-group-prepend">
+       <span class="input-group-text" id="inputGroupFileAddon01">Upload Photo</span>
+       </div>
+       <div class="custom-file">
+       <input type="hidden" id="userPhoto">
+       <input type="file" class="custom-file-input" id="inputGroupFile02"
+        aria-describedby="inputGroupFileAddon02" onchange="readURLPhoto(this);">
+       <label class="custom-file-label" for="inputGroupFile02" id="filenamephoto"></label>
+        <span class="field-valid" id="userPhotoErr">Please upload Photo</span>
+       </div>
+
+
+
+                                  @*   <input type="hidden" id="userPhoto">
+                                    <input type='file' onchange="readURLPhoto(this);" /> *@
+                                   @* 
+                                    <div class="row">  <span class="field-valid" id="photoerror">Please upload photo</span></div> *@
+     </div>
+                                <div class="col">
+                                  <embed id="photo" width="200px" height="200px" />@*   <img id="photo" src="http://placehold.it/180" alt="user image" asp-for="UserImage" /> *@
+                                </div>
+                                <span class="field-valid" id="userPhotoErr">Please Upload Photo</span>
+      </div>
+
+
+  @*    <div class="row mb-3">
+         <input asp-for="file" class="form-control" accept=".pdf" type="file" asp-asp-page-handler="UploadPassport"/>
+          <input type="hidden" asp-for="@Model.UserPassportUrl" id="userPassport"> *@
+
+       @*    <div class="col-md-6">
+   <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroupFileAddon01">Upload Passport</span>
+  </div>
+  <div class="custom-file">
+      <input type="hidden" asp-for="@Model.UserPassportUrl" id="userPassport">
+    <input type="file" class="custom-file-input" id="inputGroupFile01"
+      aria-describedby="inputGroupFileAddon01" onchange="readPassport(this);">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    <img id="imgpassport" src="http://placehold.it/180" alt="user image" asp-for="UserImage" />
+  </div>
+  </div>
+  <div class="col-md-6">
+   <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroupFileAddon01">Upload Photo</span>
+  </div>
+  <div class="custom-file">
+      <input type="hidden" asp-for="@Model.UserPhotoUrl" id="userPhoto">
+    <input type="file" class="custom-file-input" id="inputGroupFile02"
+      aria-describedby="inputGroupFileAddon01" onchange="readPhoto(this);">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    <img id="imgPhoto" src="http://placehold.it/180" alt="user image" asp-for="UserImage" />
+  </div>
+  </div> *@
+  
+ @*   </div> *@
+    <h5 class="mb-3" style="color:#30A9E1">Terms and Conditions</h5>
+    <div class="row mb-3">
+        <div class="row ml-3" >
+        <p>1. I am aware that the visa fee is not refunded if the visa is refused. </p>
+        <p>
+            2. Applicable in case a multiple-entry visa is applied for:
+                 I am aware of the need to have an adequate travel medical insurance for my first stay and any subsequent
+                 visits to the territory of Member States
+        </p>
+        <input type="checkbox" class="form-check-inline" id="termscheck">
+        <label class="form-check-inline" for="termscheck">I have read and understood the terms and conditions</label>
+        <span class="field-valid" id="termscheckErr">Please read and check terms and conditions</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+        </div>
+        <div class="col-2">
+            <button type="submit" id="btnSubmit" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important">Submit</button>
+        </div>
+        <div class="col-2">
+            <button type="submit" id="btnCancel" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important">Cancel</button>
+        </div>
+    </div>
+    </form>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script>
+
+    $(function () {
+        $(document).ready(function () {
+            LoadCountries();
+             LoadVisaTypes();
+        });
+        
+        LoadVisaTypes = function () {
+        $.ajax({
+        type: 'GET',
+        url: '/api/VisaTypes',
+        headers:{  },
+            success: function (data, status) {
+                var html = "";
+                data.forEach(function (data) {
+                    html += `<option value=${data.id}>${data.visaType}</option>`;
+                });
+                $("#cmbVisaType").append(html);
+            }
+        });
+        }
+        LoadCountries = function () {
+        $.ajax({
+        type: 'GET',
+        url: '/api/Countries',
+        headers:{  },
+            success: function (data, status) {
+                var html = "";
+                var htmls = "";
+                data.forEach(function (data) {
+                    html += `<option value=${data.id}>${data.country}</option>`;
+                    htmls += `<option value=${data.id}>${data.nationality}</option>`;
+                });
+                $("#cmbIssueCountry").append(html);
+                $("#cmbBirthCountry").append(html);
+                $("#cmbNationality").append(htmls);
+                $("#cmbSponsorNationality").append(htmls);
+            }
+        });
+        }
+        $('#cmbVisaType').click(function (evt) {
+            $("#hdnVisaTypeId").val(this.value);
+        });
+        $('#cmbIssueCountry').click(function (evt) {
+            $("#hdnIssueCountry").val(this.value);
+        });
+        $('#cmbBirthCountry').click(function (evt) { 
+         $("#hdnBirthCountry").val(this.value);
+        });
+        $('#cmbNationality').click(function (evt) { 
+         $("#hdnNationality").val(this.value);
+        });
+        $('#cmbSponsorNationality').click(function (evt) { 
+         $("#hdnSponsorNationality").val(this.value);
+        });
+          readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                  $("#filenamepassport").text(input.files[0].name);
+                reader.onload = function (e) {
+                    $('#pdf').attr('src', e.target.result);
+                    $('#userPassport').val(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+              
+            }
+        };
+            readURLPhoto = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                  $("#filenamephoto").text(input.files[0].name);
+                reader.onload = function (e) {
+                    $('#photo').attr('src', e.target.result);
+                    $('#userPhoto').val(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+        $('#btnSubmit').click(function (evt) {
+            if (validate()==true) {
+            SaveApplication();
+            Swal.fire({
+                        title: "Success!",
+                        text: "Application Submitted Successfully!",
+                        icon: "success"
+                    });
+        }else{
+                return false;
+        }
+        });
+    validate = function () {
+        var valid = true;
+        if ($("#hdnVisaTypeId").val() == "0" ||$("#hdnVisaTypeId").val() == "" ) {
+            valid = false;
+            $("#hdnVisaTypeIdErr").removeClass("field-valid");
+            $("#hdnVisaTypeIdErr").addClass("field-error");
+        }else{
+            $("#hdnVisaTypeIdErr").removeClass("field-error");
+            $("#hdnVisaTypeIdErr").addClass("field-valid");
+        }
+        if ($("#txtFullName").val() == "0"||$("#txtFullName").val() == "" ) {
+            valid = false;
+            $("#txtFullNameErr").removeClass("field-valid");
+            $("#txtFullNameErr").addClass("field-error");
+        }else{
+            $("#txtFullNameErr").removeClass("field-error");
+            $("#txtFullNameErr").addClass("field-valid");
+        }
+         if ($("#txtFatherName").val() == "0"||$("#txtFatherName").val() == "" ) {
+            valid = false;
+            $("#txtFatherNameErr").removeClass("field-valid");
+            $("#txtFatherNameErr").addClass("field-error");
+        }else{
+            $("#txtFatherNameErr").removeClass("field-error");
+            $("#txtFatherNameErr").addClass("field-valid");
+        }
+         if ($("#txtMotherName").val() == "0"||$("#txtMotherName").val() == "" ) {
+            valid = false;
+            $("#txtMotherNameErr").removeClass("field-valid");
+            $("#txtMotherNameErr").addClass("field-error");
+        }else{
+            $("#txtMotherNameErr").removeClass("field-error");
+            $("#txtMotherNameErr").addClass("field-valid");
+        }
+          if ($("#txtSpouseName").val() == "0"||$("#txtSpouseName").val() == "" ) {
+            valid = false;
+            $("#txtSpouseNameErr").removeClass("field-valid");
+            $("#txtSpouseNameErr").addClass("field-error");
+        }else{
+            $("#txtSpouseNameErr").removeClass("field-error");
+            $("#txtSpouseNameErr").addClass("field-valid");
+        }
+         if ($("#txtBirthDate").val() == "0"||$("#txtBirthDate").val() == "" ) {
+            valid = false;
+            $("#txtBirthDateErr").removeClass("field-valid");
+            $("#txtBirthDateErr").addClass("field-error");
+        }else{
+            $("#txtBirthDateErr").removeClass("field-error");
+            $("#txtBirthDateErr").addClass("field-valid");
+        }
+ if ($("#txtBirthCity").val() == "0"||$("#txtBirthCity").val() == "" ) {
+            valid = false;
+            $("#txtBirthCityErr").removeClass("field-valid");
+            $("#txtBirthCityErr").addClass("field-error");
+        }else{
+            $("#txtBirthCityErr").removeClass("field-error");
+            $("#txtBirthCityErr").addClass("field-valid");
+        }
+if ($("#hdnBirthCountry").val() == "0"||$("#hdnBirthCountry").val() == "" ) {
+            valid = false;
+            $("#hdnBirthCountryErr").removeClass("field-valid");
+            $("#hdnBirthCountryErr").addClass("field-error");
+        }else{
+            $("#hdnBirthCountryErr").removeClass("field-error");
+            $("#hdnBirthCountryErr").addClass("field-valid");
+        }
+if ($("#hdnNationality").val() == "0"||$("#hdnNationality").val() == "" ) {
+            valid = false;
+            $("#hdnNationalityErr").removeClass("field-valid");
+            $("#hdnNationalityErr").addClass("field-error");
+        }else{
+            $("#hdnNationalityErr").removeClass("field-error");
+            $("#hdnNationalityErr").addClass("field-valid");
+        }
+        if ($("#txtProfession").val() == "0"||$("#txtProfession").val() == "" ) {
+            valid = false;
+            $("#txtProfessionErr").removeClass("field-valid");
+            $("#txtProfessionErr").addClass("field-error");
+        }else{
+            $("#txtProfessionErr").removeClass("field-error");
+            $("#txtProfessionErr").addClass("field-valid");
+        }
+          if ($("#txtReligion").val() == "0"||$("#txtReligion").val() == "" ) {
+            valid = false;
+            $("#txtReligionErr").removeClass("field-valid");
+            $("#txtReligionErr").addClass("field-error");
+        }else{
+            $("#txtReligionErr").removeClass("field-error");
+            $("#txtReligionErr").addClass("field-valid");
+        }
+   if ($("#txtPassportNo").val() == "0"||$("#txtPassportNo").val() == "" ) {
+            valid = false;
+            $("#txtPassportNoErr").removeClass("field-valid");
+            $("#txtPassportNoErr").addClass("field-error");
+        }else{
+            $("#txtPassportNoErr").removeClass("field-error");
+            $("#txtPassportNoErr").addClass("field-valid");
+        }
+        if ($("#txtDateofIssue").val() == "0"||$("#txtDateofIssue").val() == "" ) {
+            valid = false;
+            $("#txtDateofIssueErr").removeClass("field-valid");
+            $("#txtDateofIssueErr").addClass("field-error");
+        }else{
+            $("#txtDateofIssueErr").removeClass("field-error");
+            $("#txtDateofIssueErr").addClass("field-valid");
+        }
+        if ($("#txtDateofExpiry").val() == "0"||$("#txtDateofExpiry").val() == "" ) {
+            valid = false;
+            $("#txtDateofExpiryErr").removeClass("field-valid");
+            $("#txtDateofExpiryErr").addClass("field-error");
+        }else{
+            $("#txtDateofExpiryErr").removeClass("field-error");
+            $("#txtDateofExpiryErr").addClass("field-valid");
+        }
+         if ($("#hdnIssueCountry").val() == "0"||$("#hdnIssueCountry").val() == "" ) {
+            valid = false;
+            $("#hdnIssueCountryErr").removeClass("field-valid");
+            $("#hdnIssueCountryErr").addClass("field-error");
+        }else{
+            $("#hdnIssueCountryErr").removeClass("field-error");
+            $("#hdnIssueCountryErr").addClass("field-valid");
+        }
+         if ($("#userPassport").val() == "0"||$("#userPassport").val() == "" ) {
+            valid = false;
+            $("#userPassportErr").removeClass("field-valid");
+            $("#userPassportErr").addClass("field-error");
+        }else{
+            $("#userPassportErr").removeClass("field-error");
+            $("#userPassportErr").addClass("field-valid");
+        }
+         if ($("#userPhoto").val() == "0"||$("#userPhoto").val() == "" ) {
+            valid = false;
+            $("#userPhotoErr").removeClass("field-valid");
+            $("#userPhotoErr").addClass("field-error");
+        }else{
+            $("#userPhotoErr").removeClass("field-error");
+            $("#userPhotoErr").addClass("field-valid");
+        }
+         if ($("#termscheck").is(":Checked")==true) {           
+            $("#termscheckErr").removeClass("field-error");
+            $("#termscheckErr").addClass("field-valid");
+        }else{
+             valid = false;
+            $("#termscheckErr").removeClass("field-valid");
+            $("#termscheckErr").addClass("field-error");
+        }
+         if ($("#txtSponsorName").val() == "0"||$("#txtSponsorName").val() == "" ) {
+            valid = false;
+            $("#txtSponsorNameErr").removeClass("field-valid");
+            $("#txtSponsorNameErr").addClass("field-error");
+        }else{
+            $("#txtSponsorNameErr").removeClass("field-error");
+            $("#txtSponsorNameErr").addClass("field-valid");
+        }
+          if ($("#hdnSponsorNationality").val() == "0"||$("#hdnSponsorNationality").val() == "" ) {
+            valid = false;
+            $("#hdnSponsorNationalityErr").removeClass("field-valid");
+            $("#hdnSponsorNationalityErr").addClass("field-error");
+        }else{
+            $("#hdnSponsorNationalityErr").removeClass("field-error");
+            $("#hdnSponsorNationalityErr").addClass("field-valid");
+        }
+          if ($("#txtRelationship").val() == "0"||$("#txtRelationship").val() == "" ) {
+            valid = false;
+            $("#txtRelationshipErr").removeClass("field-valid");
+            $("#txtRelationshipErr").addClass("field-error");
+        }else{
+            $("#txtRelationshipErr").removeClass("field-error");
+            $("#txtRelationshipErr").addClass("field-valid");
+        }
+         if ($("#txtSponsorAddress").val() == "0"||$("#txtSponsorAddress").val() == "" ) {
+            valid = false;
+            $("#txtSponsorAddressErr").removeClass("field-valid");
+            $("#txtSponsorAddressErr").addClass("field-error");
+        }else{
+            $("#txtSponsorAddressErr").removeClass("field-error");
+            $("#txtSponsorAddressErr").addClass("field-valid");
+        } 
+        if ($("#txtSponsorMobileNo").val() == "0"||$("#txtSponsorMobileNo").val() == "" ) {
+            valid = false;
+            $("#txtSponsorMobileNoErr").removeClass("field-valid");
+            $("#txtSponsorMobileNoErr").addClass("field-error");
+        }else{
+            $("#txtSponsorMobileNoErr").removeClass("field-error");
+            $("#txtSponsorMobileNoErr").addClass("field-valid");
+        }
+        if ($("#txtSponsorTelNo").val() == "0"||$("#txtSponsorTelNo").val() == "" ) {
+            valid = false;
+            $("#txtSponsorTelNoErr").removeClass("field-valid");
+            $("#txtSponsorTelNoErr").addClass("field-error");
+        }else{
+            $("#txtSponsorTelNoErr").removeClass("field-error");
+            $("#txtSponsorTelNoErr").addClass("field-valid");
+        }
+
+
+        return valid;
+    };
+         $('#btnCancel').click(function (evt) {
+          Swal.fire({
+                        title: "Cancelled!",
+                        text: "Application cancelled!",
+                        icon: "error"
+                    });
+        });
+       
+        SaveApplication = function () {
+            var passport = $('#userPassport').val().split(',')[1];
+            var photo = $('#userPhoto').val().split(',')[1];
+            var visaapplication = {
+                VisaType :$("#hdnVisaTypeId").val(),
+                FullName  :$("#txtFullName").val(),
+                FatherName  :$("#txtFatherName").val(),
+                MotherName  :$("#txtMotherName").val(),
+                SpouseName  :$("#txtSpouseName").val(),
+                BirthDate  :$("#txtBirthDate").val(),
+                BirthCity  :$("#txtBirthCity").val(),
+                BirthCountry  :$("#hdnBirthCountry").val(),
+                Nationality  :$("#hdnNationality").val(),
+                Profession  :$("#txtProfession").val(),
+                Religion  :$("#txtReligion").val(),
+                PassportNo  :$("#txtPassportNo").val(),
+                IssueDate  :$("#txtDateofIssue").val(),
+                ExpiryDate  :$("#txtDateofExpiry").val(),
+                IssuingCountry  :$("#hdnIssueCountry").val(),
+                SponsorName  :$("#txtSponsorName").val(),
+                Relationship  :$("#txtRelationship").val(),
+                SponsorNationality  :$("#hdnSponsorNationality").val(),
+                BusinessAddress  :$("#txtSponsorAddress").val(),
+                TelNo  :$("#txtSponsorTelNo").val(),
+                SponsorMobile  :$("#txtSponsorMobileNo").val(),
+                Photo : photo,
+                Passport :passport,
+                Status:'S',
+                CreatedDate:$("#txtCurrentDate").val(),
+                CreatedBy:$("#hdnId").val()
+            };
+             $.ajax({
+            type: "POST",
+            url: '/api/VisaApplications',
+            data: JSON.stringify(visaapplication),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async:false,
+              success: function (data, status) {
+                
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //$("#msg").html(XMLHttpRequest.responseJSON.Message);
+                //$("#div_message").removeClass().addClass('div_message alert alert-danger').show().delay(10000).hide("slow");
+            }
+        });
+        }
+
+        $('#MyFileInput').on('change', function () {
+    var file = this.files[0];
+    if (file.type === 'application/pdf') {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('MyObjectTag').data = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+         readPassport = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgpassport').attr('src', e.target.result);
+                    $('#userPassport').val(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+         readPhoto = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgphoto').attr('src', e.target.result);
+                    $('#userPhoto').val(e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+       
+    });
+    
+</Script>

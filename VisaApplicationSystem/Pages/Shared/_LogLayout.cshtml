@@ -1,0 +1,63 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visa Application System - @ViewData["Title"]</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/sidemenu.css" rel="stylesheet" />
+    <link href="~/css/datatable.min.css" rel="stylesheet" />
+    <link href="~/css/semantic.min.css" rel="stylesheet" />
+    <link href="~/css/datatables.semanticui.min.css" rel="stylesheet" />
+    <link href="~/css/sweetalert2.css" rel="stylesheet" />
+    <link href="~/css/flatpickr.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body style="background-image: url('img/login.jpg');">
+
+    <section class="ftco-section">
+        @RenderBody();
+    </section>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Visa Application System - <a asp-area="">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/js/jquery.min.js"></script>
+    @*  <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    @*     <script src="~/js/general.js"></script> *@
+    <script src="~/js/datatables.min.js"></script>
+    @*     <script src="~/js/validation.js"></script> *@
+    <script src="~/js/sweetalert2.min.js"></script>
+    <script src="~/js/flatpickr.min.js"></script>
+
+    <script>
+        $('.date').flatpickr({
+            dateFormat: "Y-m-d"
+        });
+        $('.datefromtoday').flatpickr({
+            minDate: "today",
+            // maxDate: new Date(),
+            dateFormat: "Y-m-d"
+
+        });
+        $('.datetoday').flatpickr({
+            minDate: "today",
+            defaultDate: "today",
+            dateFormat: "Y-m-d"
+        });
+        $('.time').flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i'
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

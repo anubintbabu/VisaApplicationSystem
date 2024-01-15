@@ -1,0 +1,11 @@
+﻿@page "/dashboard"
+@model VisaApplicationSystem.Pages.Account.DashboardModel
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "dashboard";
+    if (Model.Id == null || Model.Id==0) Redirect("/Account/Login");
+}
+<div class="container">
+    <input type="hidden" id="hdnId" value="@Model.Id"/>
+    <h1 style="color:deepskyblue">Welcome @Model.Name</h1>
+</div>

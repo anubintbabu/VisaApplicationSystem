@@ -1,0 +1,157 @@
+﻿@page "/userprofile"
+@model VisaApplicationSystem.Pages.Account.UserProfileModel
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "userprofile";
+}
+<div class="container mt-8" style="margin-top:50px">
+    <h2 class="text-center mb-3" style="color:#30A9E1">User Profile</h2>
+    <input type="hidden" id="hdnId" value="@Model.Id" />
+    <div class="row col-4 form-group mt-3">
+        <label for="txtName" class="form-label col-form-label-sm">Name</label>
+        <input type="text" class="form-control edit" id="txtName" asp-for="Name">
+    </div>
+    <div class="row col-4 form-group mt-3">
+        <label for="txtMobile" class="form-label col-form-label-sm">Mobile No</label>
+        <input type="number" class="form-control edit" id="txtMobile" asp-for="PhoneNo">
+    </div>
+    <div class="row col-4 form-group mt-3">
+        <label for="txtEmail" class="form-label col-form-label-sm">Email</label>
+        <input type="text" class="form-control edit" id="txtEmail" asp-for="Email">
+    </div>
+    <div class="row col-4 form-group mt-3">
+        <label for="txtUsername" class="form-label col-form-label-sm">Username</label>
+        <input type="text" class="form-control edit" id="txtUsername" asp-for="Username">
+    </div>
+    <div id="divPass" style="display:none">
+        <div class="row col-4 form-group mt-3">
+            <label for="txtPassword" class="form-label col-form-label-sm">New Password</label>
+            <input type="password" class="form-control" id="txtPassword">
+        </div>
+        <div class="row col-4 form-group mt-3">
+            <label for="txtConfirmPassword" class="form-label col-form-label-sm" disabled>Confirm Password</label>
+            <input type="password" class="form-control" id="txtConfirmPassword">
+        </div>
+
+        <div class="row col-3 form-group mt-3">
+            <button type="submit" id="btnChange" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important">Change Password</button>
+        </div>
+    </div>
+
+
+    <div class="row form-action">
+
+        <div class="col-3">
+            <button type="submit" id="btnEdit" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important">Edit Profile</button>
+            <button type="submit" id="btnUpdate" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important;display:none">Update</button>
+        </div>
+        <div class="col-3"> <button type="submit" id="btnChangePassword" class="form-control btn btn-primary rounded submit px-3" style="background-color:#30A9E1!important;border-color:#30A9E1!important">Change Password</button></div>
+        <div class="col-8"></div>
+    </div>
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+<script>
+
+    $(function () {
+        $(document).ready(function () {
+            // LoadUserprofile();
+            $('.edit').attr("disabled", true);
+        });
+        // LoadUserprofile = function () {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: '/api/User',
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         async: false,
+        //         success: function (data, status) {
+        //             $("#txtName").val(data[0].fullName);
+        //             $("#txtEmail").val(data[0].email);
+        //             $("#txtPhoneNo").val(data[0].phoneNo);
+        //             $("#txtUsername").val(data[0].username);
+                    
+        //         },
+        //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //             //$("#msg").html(XMLHttpRequest.responseJSON.Message);
+        //             //$("#div_message").removeClass().addClass('div_message alert alert-danger').show().delay(10000).hide("slow");
+        //         }
+        //     });
+        // }
+        $('#btnEdit').click(function (evt) {
+            $('.edit').attr("disabled", false);
+            $('#btnEdit').hide();
+            $('#btnUpdate').show();
+            $('#btnChangePassword').hide();
+        });
+        $('#btnUpdate').click(function (evt) {
+            SaveUser();
+            Swal.fire({
+                title: "Success!",
+                text: "Profile Updated successfully!",
+                icon: "Success"
+            }).then(function () {
+                $('#btnEdit').show();
+                $('#btnChangePassword').show();
+                $('#btnUpdate').hide();
+            });
+
+        });
+        $('#btnChangePassword').click(function (evt) {
+            $('#divPass').show();
+            $('#btnEdit').hide();
+            $('#btnChangePassword').hide();
+        });
+        $('#btnChange').click(function (evt) {
+            if ($("#txtPassword").val() == $("#txtConfirmPassword").val()) {
+                SaveUser();
+                Swal.fire({
+                    title: "Success!",
+                    text: "Password changed successfully!",
+                    icon: "Success"
+                }).then(function () {
+                    $('#divPass').hide();
+                    $('#btnChangePassword').show();
+                    $('#btnEdit').show();
+                });
+            }else{
+                Swal.fire({
+                    title: "Error!",
+                    text: "Password mismatch!",
+                    icon: "Error"
+                }).then(function () {
+                  
+                });
+                return false;
+            }
+
+        });
+
+        SaveUser = function () {
+           
+            var userProfile = {
+                UserId: $("#hdnId").val(),
+                Name: $("#txtName").val(),
+                Email: $("#txtEmail").val(),
+                PhoneNo: $("#txtMobile").val(),
+                Username: $("#txtUsername").val(),
+                Password: $("#txtPassword").val()
+            };
+            $.ajax({
+                type: "PUT",
+                url: '/api/User',
+                data: JSON.stringify(userProfile),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (data, status) {
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //$("#msg").html(XMLHttpRequest.responseJSON.Message);
+                    //$("#div_message").removeClass().addClass('div_message alert alert-danger').show().delay(10000).hide("slow");
+                }
+            });
+        }
+    });
+</script>

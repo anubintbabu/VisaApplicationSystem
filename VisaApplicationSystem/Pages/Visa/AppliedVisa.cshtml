@@ -1,0 +1,133 @@
+﻿@page "/visa"
+@model VisaApplicationSystem.Pages.Visa.AppliedVisaModel
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "Visa";
+}
+<div class="container mt-8" style="margin-top:50px">
+    <h2 class="text-center mb-3" style="color:#30A9E1">YOUR VISA APPLICATIONS</h2>
+    <input type="hidden" id="hdnId" value="@Model.Id" />
+    <table id="tblVisaApplicationList" class="ui celled table" style="width:100%">
+        <thead>
+            <tr>
+                <th class="th-sm">
+                    Application No
+
+                </th>
+                <th class="th-sm">
+                    Name
+
+                </th>
+
+                <th class="th-sm">
+                    Passport No
+                </th>
+
+               
+                <th class="th-sm">
+                    Visa Type
+                </th>
+               
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @*  @foreach (var item in Model.checklistList)
+            {
+            <tr>
+            <td>@item.CheckListId</td>
+            <td>@item.Name</td>
+
+            <td>@item.EntrantType</td>
+
+            <td>@item.Company</td>
+
+            <td>@item.Department</td>
+
+            <td>@item.Designation</td>
+            @if (@item.Status.Trim() == "CP")
+            {
+            <td> <p class="status checklistcomplete">Checklist Passed</p></td>
+            }
+            else if (@item.Status.Trim() == "R")
+            {
+            <td> <p class="status register">Registered</p></td>
+            }
+            else if (@item.Status.Trim() == "CN")
+            {
+            <td> <p class="status cancelled">Cancelled</p></td>
+            }
+            else if (@item.Status.Trim() == "B")
+            {
+            <td> <p class="status blacklist">Disabled</p></td>
+            }
+            else if (@item.Status.Trim() == "CI")
+            {
+            <td> <p class="status inprogress">InProgress</p></td>
+            }
+            else
+            {
+            <td>@item.Status</td>
+            }
+            </tr>
+            }
+            *@
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script>
+
+    $(function () {
+        // new DataTable('#tblVisaApplicationList');
+        // $('.odd').hide();
+        $(document).ready(function () {
+            ListAllVisaApplications();
+        });
+        ListAllVisaApplications = function () {
+            $.ajax({
+                type: "GET",
+                url: '/api/VisaApplications',
+                data: { id: $("#hdnId").val() },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (data, status) {
+                    var html = "";
+                    
+                    for (i = 0; i < data.length; i++) {
+                        html += `<tr>
+                                                        <td>${data[i].table1.id}</td>
+
+                                                            <td>${data[i].table1.fullName}</td>
+
+                                                            <td>${data[i].table1.passportNo}</td>
+                                                              
+                                                                    <td> ${data[i].table2.visaType}</td>`;
+                        if (data[i].table1.status == "S") {
+                            html += `<td><p class="status checklistcomplete"> Submitted </p></td>`;
+                        }
+                        else if (data[i].table1.status == "A") {
+                            html += `<td><p class="status checklistcomplete"> Approved </p></td>`;
+                        }
+
+
+
+                        html += `</tr>`;
+                    }
+                    html += `</table>`;
+                    $("#tblVisaApplicationList").append(html);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //$("#msg").html(XMLHttpRequest.responseJSON.Message);
+                    //$("#div_message").removeClass().addClass('div_message alert alert-danger').show().delay(10000).hide("slow");
+                }
+            });
+        }
+
+    });
+</script>
